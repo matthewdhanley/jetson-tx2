@@ -51,14 +51,12 @@ This will open the installer which should look like the image below.
 
 4. Follow the on-screen instrunctions. It will verify the install location and prompt you to choose your board. It will ask for an administrative password then prompt you what components you would like to download. I selected a full install and selected "Automatically resolve dependency conflicts" on the bottom left of the window before selecting next.
 
-![Component Manger]
-(https://github.com/matthewdhanley/jetson-tx2/tree/master/getting_started/img/component_manager.png)
+![Component Manger](https://github.com/matthewdhanley/jetson-tx2/blob/master/getting_started/img/component_manager.png)
 
 Read and accept the "Terms and Conditions" then the downloads will begin. The downloads took about 7 minutes on a 170 mbps wifi connection. Once the downloads finish, the installs will begin.
 
 I was prompted with an error to install OpenCV for Tegra manually manually before continuing.
-![OpenCV Error]
-(https://github.com/matthewdhanley/jetson-tx2/tree/master/getting_started/img/opencv_error.png)
+![OpenCV Error](https://github.com/matthewdhanley/jetson-tx2/blob/master/getting_started/img/opencv_error.png)
 
 I opened a terminal on the host and installed manually.
 ```
@@ -78,22 +76,23 @@ ping -c3 -I enp4s0 www.google.com
 ping -c3 -I wlp5s0 www.google.com
 ```
 The enp4s0 resulted in a "Destination Host Unreachable" message, thus this cannot be the correct network interface for the host machine. I selected wlp5s0. Note: this information is needed for ssh.
-![ifconfig]
-(https://github.com/matthewdhanley/jetson-tx2/tree/master/getting_started/img/if_config.png)
+![ifconfig](https://github.com/matthewdhanley/jetson-tx2/blob/master/getting_started/img/if_config.png)
 
 6. Before you start this step, make sure your Jetson TX2 wired to your router.
 You will be presented with this screen before the install starts.
-![Post Install]
-(https://github.com/matthewdhanley/jetson-tx2/tree/master/getting_started/img/post_installation.png)
-When you hit next, a shell will appear telling you how to put your device into Force USB Recovery mode. 
-force usb recovery
-30 gb volume popup (hangs for a bit)
-system.img (takes a bit)
-finished flashing (now the jetson boots up to ubuntu)
-"Determining the IP address of the target..." (NEEDS TO BE CONNECTED TO ETHERNET!!!)
-fin.
+![Post Install](https://github.com/matthewdhanley/jetson-tx2/blob/master/getting_started/img/post_installation.png)
+When you click next, a shell will appear telling you how to put your device into Force USB Recovery mode.
+ 
+![Shell](https://github.com/matthewdhanley/jetson-tx2/blob/master/getting_started/img/force_usb.png)
 
+Once you complete these steps, you should see the device appear when you perform an `lsusb` in the command line. If you see the device, press "Enter" in the shell to begin the process.
+![lsusb](https://github.com/matthewdhanley/jetson-tx2/blob/master/getting_started/img/lsusb.png)
 
+After you hit enter, you will see text stream across the shell. Eventually you will see a "Files" window appear and it might seem like the process has halted. Just continue waiting, this is nominal. This is the window that seemed to hang, but I just gave it time and it continued.
+![rootfs](https://github.com/matthewdhanley/jetson-tx2/blob/master/getting_started/img/rootfs.png)
 
+After a bit more time, the flash of the OS will be finished and the installations will begin. After all is done, you will see a screen like this one.
+![installation_finished.png](https://github.com/matthewdhanley/jetson-tx2/blob/master/getting_started/img/installation_finished.png)
 
+Your Jetson TX2 should now boot back into Ubuntu and you are ready to start developing!
 
