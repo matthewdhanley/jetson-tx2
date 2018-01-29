@@ -28,7 +28,7 @@ NVIDIA provides a failry good [guide](http://developer2.download.nvidia.com/embe
 * You must use a HDMI compatable monitor. HDMI to VGA or HDMI to DVI will likely not work with the TX2. The Jetson will only work with VGA if its default resolution coinsides with your monitor's resolution. This means that the Jetson needs to otherwise query the monitor for specs, but it cannot do that through VGA or DVI.
 
 ## JetPack
-JetPack is available for download [here] (https://developer.nvidia.com/embedded/jetpack).
+JetPack is available for download [here](https://developer.nvidia.com/embedded/jetpack).
 
 ### What is JetPack?
 
@@ -47,7 +47,7 @@ chmod +x JetPack-L4T-3.1-linux-x64.run
 ./JetPack-L4T-3.1-linux-x64.run
 ```
 This will open the installer which should look like the image below.
-![Installer](https://github.com/matthewdhanley/jetson-tx2/getting_started/img/Installer.png)
+![Installer](https://github.com/matthewdhanley/jetson-tx2/blob/master/getting_started/img/Install.png)
 
 4. Follow the on-screen instrunctions. It will verify the install location and prompt you to choose your board. It will ask for an administrative password then prompt you what components you would like to download. I selected a full install and selected "Automatically resolve dependency conflicts" on the bottom left of the window before selecting next.
 
