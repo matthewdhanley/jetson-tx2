@@ -47,8 +47,7 @@ chmod +x JetPack-L4T-3.1-linux-x64.run
 ./JetPack-L4T-3.1-linux-x64.run
 ```
 This will open the installer which should look like the image below.
-![Installer]
-(https://github.com/matthewdhanley/jetson-tx2/blob/master/getting_started/img/Install.png)
+[[img/Install.png|Install]]
 
 4. Follow the on-screen instrunctions. It will verify the install location and prompt you to choose your board. It will ask for an administrative password then prompt you what components you would like to download. I selected a full install and selected "Automatically resolve dependency conflicts" on the bottom left of the window before selecting next.
 
