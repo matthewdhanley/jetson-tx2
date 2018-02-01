@@ -33,7 +33,7 @@ JetPack is available for download [here](https://developer.nvidia.com/embedded/j
 ### What is JetPack?
 
 ### How Do I Get JetPack?
-JetPack is required to be downloaded onto a "host" computer before it is flashed onto the TX2. Why? JetPack is designed to run a x86_64 Linux PC, but the Jetson has an [ARM architecture](https://en.wikipedia.org/wiki/ARM_architecture). Note that it is reccommended this process is performed with a host machine running Ubuntu 14.04. I performed it using Ubuntu 16.04.
+JetPack is required to be downloaded onto a "host" computer before it is flashed onto the TX2. Why? JetPack is designed to run a x86_64 Linux PC, but the Jetson has an [ARM architecture](https://en.wikipedia.org/wiki/ARM_architecture). Note that it is reccommended this process is performed with a host machine running Ubuntu 14.04. I performed it using Ubuntu 16.04. You should plan on this process taking about 1.5 hours from start to finish.
 
 1. Download [JetPack](https://developer.nvidia.com/embedded/jetpack) from NVIDIA. (I downloaded JetPack 3.1). You may need to make an account with NVIDIA to download. This downloads a file called something along the lines of `JetPack-L4T-3.1-linux-x64.run`.
 
