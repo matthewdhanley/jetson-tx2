@@ -2,6 +2,10 @@
 ## What is the Jetson TX2?
 The NVIDIA Jetson TX2 is a single board computer created by NVIDIA. It could be thought of as a supercomputer for the masses. Unfortunately, it's not as simple as plugging in a monitor and pressing the power button to reach the full potential of the TX2. 
 
+## Why use the Jetson TX2?
+The answer is simple, GPU! A GPU allows tasks that would take a CPU a relatively long time to be parallized to an incredible amount. Any task (that doesn't depend on the prior task) can be sent to the GPU for processing. The GPU uses hundreds of cores to compute huge amounts of information at an incredible rate thanks to the ability to parallize. This is why GPUs like the TX2 are widely used in applications such as graphics, machine learning, artificial intelligence, image processing, and more. The key is to know how to take advantage of the GPU. That's where this independent study comes in.
+
+
 ### Some Specs
 * NVIDIA Parker series Tegra X2: 256-core Pascal GPU and two 64-bit Denver CPU cores paired with four Cortex-A57 CPUs in an HMP configuration
 * 8GB of 128-bit LPDDR4 RAM
@@ -27,13 +31,22 @@ NVIDIA provides a failry good [guide](http://developer2.download.nvidia.com/embe
 ### A few things to note when starting up
 * You must use a HDMI compatable monitor. HDMI to VGA or HDMI to DVI will likely not work with the TX2. The Jetson will only work with VGA if its default resolution coinsides with your monitor's resolution. This means that the Jetson needs to otherwise query the monitor for specs, but it cannot do that through VGA or DVI.
 
-## JetPack
+# JetPack
 JetPack is available for download [here](https://developer.nvidia.com/embedded/jetpack).
 
-### What is JetPack?
+## What is JetPack?
+JetPack is a Software Development Kit (SDK) from NVIDIA. It allows you to "easily" flash your TX2 with the latest OS and provides development tools and software for both the host PC and the TX2. The purpose of JetPack is to jumpstart development on the TX2.
+The TX2 is usable without JetPack, however JetPack makes it significantly easier to develop code that takes advantage of the GPU. But how? JetPack includes packages (TensorRT, cuDNN, VisionWorks/OpenCV, CUDA, Multimedia API, L4T, and other Development Tools) that help the user attack computing problems with the TX2 GPU.
+I highly reccommend using JetPack.
 
+
+<<<<<<< HEAD
 ### How Do I Get JetPack?
 JetPack is required to be downloaded onto a "host" computer before it is flashed onto the TX2. Why? JetPack is designed to run a x86_64 Linux PC, but the Jetson has an [ARM architecture](https://en.wikipedia.org/wiki/ARM_architecture). Note that it is reccommended this process is performed with a host machine running Ubuntu 14.04. I performed it using Ubuntu 16.04. You should plan on this process taking about 1.5 hours from start to finish.
+=======
+## How Do I Get JetPack?
+JetPack is required to be downloaded onto a "host" computer before it is flashed onto the TX2. Why? JetPack is designed to run a x86_64 Linux PC, but the Jetson has an [ARM architecture](https://en.wikipedia.org/wiki/ARM_architecture). Note that it is reccommended this process is performed with a host machine running Ubuntu 14.04. I performed it using Ubuntu 16.04.
+>>>>>>> c4a78ce3e1e189c16f2532d9ba338739a60a730a
 
 1. Download [JetPack](https://developer.nvidia.com/embedded/jetpack) from NVIDIA. (I downloaded JetPack 3.1). You may need to make an account with NVIDIA to download. This downloads a file called something along the lines of `JetPack-L4T-3.1-linux-x64.run`.
 
