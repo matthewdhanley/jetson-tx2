@@ -49,8 +49,9 @@ int main(int argc, char const *argv[])
 
     // Allocate memory to the pointers on the host
 	cudaMallocHost((void **) &cpu_a, sizeof(int)*m*n);
-	cudaMallocHost((void **) &cpu_b, sizeof(int)*m*n);
-	cudaMallocHost((void **) &cpu_result, sizeof(int)*m*n);
+	cudaMallocHost((void **) &cpu_b, sizeof(int)*n*k);
+    cudaMallocHost((void **) &cpu_c, sizeof(int)*m*k);
+	cudaMallocHost((void **) &cpu_result, sizeof(int)*m*k);
 
     // Generate the matrices
     // cpu_a
@@ -101,14 +102,7 @@ int main(int argc, char const *argv[])
     dim3 dimBlock(BLOCK_SIZE, BLOCK_SIZE);
 
     // Launch kernel
-    if(m == n && n == k)
-    {
-        gpu_square_matrix_mult<<<dimGrid, dimBlock>>>(gpu_a, gpu_b, gpu_c, n);
-    }
-    else
-    {
-        gpu_matrix_mult<<<dimGrid, dimBlock>>>(gpu_a, gpu_b, gpu_c, m, n, k);
-    }
+    gpu_matrix_mult<<<dimGrid, dimBlock>>>(gpu_a, gpu_b, gpu_c, m, n, k);
 
     // Transefr results from device to host
     cudaMemcpy(cpu_c, gpu_c, sizeof(int)*m*k, cudaMemcpyDeviceToHost);
