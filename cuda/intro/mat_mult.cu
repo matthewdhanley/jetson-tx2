@@ -45,7 +45,7 @@ int main(int argc, char const *argv[])
 
 
     // Initialize pointers
-	int *cpu_a, *cpu_b, *cpu_result;
+	int *cpu_a, *cpu_b, *cpu_result, *cpu_c;
 
     // Allocate memory to the pointers on the host
 	cudaMallocHost((void **) &cpu_a, sizeof(int)*m*n);
