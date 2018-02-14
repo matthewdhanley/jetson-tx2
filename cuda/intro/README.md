@@ -6,13 +6,13 @@ The thread is like a little computer. Threads in a CUDA program have their own p
 ![Thread](https://github.com/matthewdhanley/jetson-tx2/blob/master/cuda/intro/img/thread.png)
 ## The Block
 A block is made up of many threads. Within a block, threads share a very fast "shared memory" as well as instruction stream. These instructions run in parallel. A block on the Jetson TX2 can have up to 1024 threads. Blocks can have many dimensions (1, 2, or 3) as specified by the user. All blocks within a _grid_ must be the same size.
-![Thread](https://github.com/matthewdhanley/jetson-tx2/blob/master/cuda/intro/img/block.png)
+![Block](https://github.com/matthewdhanley/jetson-tx2/blob/master/cuda/intro/img/block.png)
 ## The Grid
 A grid is a two-dimensional collection of blocks. The dimensions are specified by the user.
-![Thread](https://github.com/matthewdhanley/jetson-tx2/blob/master/cuda/intro/img/grid.png)
+![Grid](https://github.com/matthewdhanley/jetson-tx2/blob/master/cuda/intro/img/grid.PNG)
 ## Finding the Thread
 At the start of a program, threads identify themselves. This helps map where a thread is within a block within a grid. The table below shows how to index into grids.
-![Thread](https://github.com/matthewdhanley/jetson-tx2/blob/master/cuda/intro/img/full.png)
+![Full](https://github.com/matthewdhanley/jetson-tx2/blob/master/cuda/intro/img/full.PNG)
 
 | Variable | Description |
 | --- | --- |
