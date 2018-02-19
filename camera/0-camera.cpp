@@ -43,7 +43,7 @@ int main()
         // show the image
         else {
             cv::imshow("MyCameraPreview",frame_in);
-            if(cv::waitKey(100) >= 0){
+            if(cv::waitKey(1) >= 0){
                 printf("Exiting.");
                 break;
             }
