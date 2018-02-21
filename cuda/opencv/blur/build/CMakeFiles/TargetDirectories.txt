@@ -1,3 +1,0 @@
-/home/nvidia/github/jetson-tx2/cuda/opencv/blur/build/CMakeFiles/edit_cache.dir
-/home/nvidia/github/jetson-tx2/cuda/opencv/blur/build/CMakeFiles/rebuild_cache.dir
-/home/nvidia/github/jetson-tx2/cuda/opencv/blur/build/CMakeFiles/blur.dir

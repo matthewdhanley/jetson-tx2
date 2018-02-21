@@ -1,3 +1,0 @@
-/home/nvidia/github/jetson-tx2/cuda/opencv/onboard_camera/build/CMakeFiles/rebuild_cache.dir
-/home/nvidia/github/jetson-tx2/cuda/opencv/onboard_camera/build/CMakeFiles/edit_cache.dir
-/home/nvidia/github/jetson-tx2/cuda/opencv/onboard_camera/build/CMakeFiles/cam.dir
