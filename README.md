@@ -11,4 +11,9 @@ Once it's there, you can run the following command to update it within the jetso
 git pull origin master
 ```
 
+or if you simply want to overwrite all files
+```
+git fetch --hard
+```
+
 That's it!
