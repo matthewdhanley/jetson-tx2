@@ -13,7 +13,14 @@ git pull origin master
 
 or if you simply want to overwrite all files
 ```
-git fetch --hard
+git fetch --all
+git reset --hard origin/master
 ```
+
+I have included a shell script so you can simply run:
+```
+./git.sh
+```
+to update all your files (will overwrite any changes).
 
 That's it!
