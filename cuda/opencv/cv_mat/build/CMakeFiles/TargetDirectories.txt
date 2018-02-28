@@ -1,3 +1,0 @@
-/home/nvidia/github/jetson-tx2/cuda/opencv/cv_mat/build/CMakeFiles/edit_cache.dir
-/home/nvidia/github/jetson-tx2/cuda/opencv/cv_mat/build/CMakeFiles/rebuild_cache.dir
-/home/nvidia/github/jetson-tx2/cuda/opencv/cv_mat/build/CMakeFiles/cv-mat.dir
