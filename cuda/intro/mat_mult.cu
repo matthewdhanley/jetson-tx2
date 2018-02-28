@@ -48,10 +48,10 @@ int main(int argc, char const *argv[])
 	int *cpu_a, *cpu_b, *cpu_result, *cpu_c;
 
     // Allocate memory to the pointers on the host
-	cudaMallocHost((void **) &cpu_a, sizeof(int)*m*n);
-	cudaMallocHost((void **) &cpu_b, sizeof(int)*n*k);
-    cudaMallocHost((void **) &cpu_c, sizeof(int)*m*k);
-	cudaMallocHost((void **) &cpu_result, sizeof(int)*m*k);
+	cudaMallocHost((void **) &cpu_a, sizeof(int)*m*n); // matrix a
+	cudaMallocHost((void **) &cpu_b, sizeof(int)*n*k); // matrix b
+    cudaMallocHost((void **) &cpu_c, sizeof(int)*m*k); // cpu memory for gpu result
+	cudaMallocHost((void **) &cpu_result, sizeof(int)*m*k); // cpu result
 
     // Generate the matrices
     // cpu_a
@@ -81,7 +81,9 @@ int main(int argc, char const *argv[])
 	cudaEventCreate(&start);
 	cudaEventCreate(&stop);
 
+    // ******************************************************************************
     // ================================ GPU =========================================
+    // ******************************************************************************
 
     // start to count execution time of GPU version
     cudaEventRecord(start, 0);
@@ -96,6 +98,7 @@ int main(int argc, char const *argv[])
     cudaMemcpy(gpu_a, gpu_a, sizeof(int)*m*n, cudaMemcpyHostToDevice);
     cudaMemcpy(gpu_b, gpu_b, sizeof(int)*n*k, cudaMemcpyHostToDevice);
 
+    // calculate grid size needed
     unsigned int grid_rows = (m + BLOCK_SIZE - 1) / BLOCK_SIZE;
     unsigned int grid_cols = (k + BLOCK_SIZE - 1) / BLOCK_SIZE;
     dim3 dimGrid(grid_cols, grid_rows);
