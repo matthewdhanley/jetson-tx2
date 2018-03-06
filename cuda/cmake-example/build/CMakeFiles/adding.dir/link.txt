@@ -1,0 +1,1 @@
+/usr/bin/c++      CMakeFiles/adding.dir/adding_generated_adding.cu.o  -o adding -rdynamic /usr/local/cuda/lib64/libcudart_static.a -lpthread -ldl -lrt 

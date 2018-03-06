@@ -1,0 +1,3 @@
+/mnt/nvidia/github/jetson-tx2/cuda/cmake-example/build/CMakeFiles/edit_cache.dir
+/mnt/nvidia/github/jetson-tx2/cuda/cmake-example/build/CMakeFiles/rebuild_cache.dir
+/mnt/nvidia/github/jetson-tx2/cuda/cmake-example/build/CMakeFiles/adding.dir

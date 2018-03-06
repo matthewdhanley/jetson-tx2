@@ -1,0 +1,2 @@
+/usr/bin/ar qc libSubdirectory.a  CMakeFiles/Subdirectory.dir/custom.cpp.o
+/usr/bin/ranlib libSubdirectory.a

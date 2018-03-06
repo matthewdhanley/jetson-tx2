@@ -1,0 +1,1 @@
+When accessing a color image in the frame_in.data, there are three channels. Thus, the pixels are referenced from 0 to pixels*3.

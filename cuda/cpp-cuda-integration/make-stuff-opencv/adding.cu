@@ -1,6 +1,8 @@
 # include <stdlib.h> //needed for rand()
 # include <stdio.h> //needed for printf()
 
+
+
 // GPU Kernel
 __global__ void big_add(int *a, int *b, int *c, unsigned int N){
     // init thread id
@@ -15,6 +17,7 @@ __global__ void big_add(int *a, int *b, int *c, unsigned int N){
         tid += stride;
     }
 }
+
 
 // CPU function for comparison
 void cpu_add(int *a, int *b, int *c, unsigned int N){

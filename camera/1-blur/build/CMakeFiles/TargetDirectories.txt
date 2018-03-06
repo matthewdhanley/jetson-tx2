@@ -1,0 +1,3 @@
+/home/nvidia/github/jetson-tx2/camera/1-blur/build/CMakeFiles/edit_cache.dir
+/home/nvidia/github/jetson-tx2/camera/1-blur/build/CMakeFiles/rebuild_cache.dir
+/home/nvidia/github/jetson-tx2/camera/1-blur/build/CMakeFiles/gpu_blur.dir
