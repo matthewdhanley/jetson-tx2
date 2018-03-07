@@ -2,7 +2,7 @@
 // Created by matt on 3/4/18.
 //
 
-#include "gpu_add.h"
+#include "gpu_kernels.h"
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui/highgui.hpp>

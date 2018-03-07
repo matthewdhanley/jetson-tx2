@@ -13,8 +13,8 @@ endif
 
 all:
 	$(CXX) $(CFLAGS) -c main.cpp -o main.o
-	nvcc $(CUDAFLAGS) -c gpu_add.cu -o gpu_add.o
-	$(CXX) main.o gpu_add.o -o add $(LDFLAGS)
+	nvcc $(CUDAFLAGS) -c gpu_kernels.cu -o gpu_kernels.o
+	$(CXX) main.o gpu_kernels.o -o cam $(LDFLAGS)
 
 clean:
-	rm -f *.o add
+	rm -f *.o cam
