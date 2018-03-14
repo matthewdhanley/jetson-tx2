@@ -14,7 +14,8 @@ __global__ void gpu_matrix_mult_one(int *a, int *b, int *c, int m, int n, int k)
     }
 }
 
-__global__ void gpu_matrix_mult_two(float *d_M, float *d_N, float *d_P, int m, int n, int k){
+__global__ void gpu_matrix_mult_two(float *d_M, float *d_N, float *d_P, int m, int n, int k)
+{
 
     // shared memory for tiling
     __shared__ float Mds [TILE_WIDTH][TILE_WIDTH];

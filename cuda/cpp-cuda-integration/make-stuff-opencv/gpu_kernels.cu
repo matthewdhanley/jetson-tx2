@@ -57,12 +57,12 @@ __global__ void gpu_grey_and_blur(unsigned char* Pout, unsigned char* Pin, int w
     }
     __syncthreads();
 
-    unsigned char k_size = 3;
+    unsigned char k_size = 1;
     int pixVal = 0;
     int pixels = 0;
     if (col < width && row < height){
-        for(int blurRow = -k_size; blurRow < k_size+1; blurRow++){
-            for(int blurCol = -k_size; blurCol < k_size+1; blurCol++){
+        for(int blurRow = -k_size; blurRow < k_size+1; ++blurRow){
+            for(int blurCol = -k_size; blurCol < k_size+1; ++blurCol){
                 int curRow = row + blurRow;
                 int curCol = col + blurCol;
 
@@ -78,6 +78,7 @@ __global__ void gpu_grey_and_blur(unsigned char* Pout, unsigned char* Pin, int w
         Pout[row * width + col] = (unsigned char) (pixVal / pixels);
     }
 }
+
 
 __global__ void gpu_grey_and_thresh(unsigned char* Pout, unsigned char* Pin, int width, int height){
 
