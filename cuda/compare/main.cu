@@ -32,25 +32,29 @@ inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=t
 
 
 // constant memory on host to save kernel for fast access
-__constant__ unsigned char M[MASK_SIZE * MASK_SIZE];
+__constant__ float M[MASK_SIZE * MASK_SIZE];
 
-// ----------------------------gpu kernels------------------------------
+// -------------------------------------------- GPU KERNELS ------------------------------------------------------------
 
+// CONVOLUTION
 __global__ void gpu_convolve2d(unsigned char* Pout, unsigned char* Pin,
-                               int width, int height, int mask_sum) {
+                               int width, int height) {
+
     // index into the image
     int x = blockIdx.x * blockDim.x + threadIdx.x;
     int y = blockIdx.y * blockDim.y + threadIdx.y;
     int i = y * width + x;
 
+    // commonly used operation so only do it once and store it in register
     unsigned char n = MASK_SIZE / 2;
 
-    __shared__ unsigned char Pout_ds[BLOCK_SIZE * BLOCK_SIZE];
+    // shared memory to store tile
+    __shared__ float Pout_ds[BLOCK_SIZE * BLOCK_SIZE];
 
     // load tiles into shared memory
     if (x < width && y < height) {
 //        Pout_ds[threadIdx.y * blockDim.y + threadIdx.x] = Pin[i];
-        Pout_ds[threadIdx.y * blockDim.x + threadIdx.x] = Pin[i];
+        Pout_ds[threadIdx.y * blockDim.x + threadIdx.x] = float(Pin[i]);
     }
 
     __syncthreads();  // execution barrier
@@ -58,54 +62,49 @@ __global__ void gpu_convolve2d(unsigned char* Pout, unsigned char* Pin,
 
     // remember that we are tiling with blocks size equal to tile size
     // we need to create bounds for the tiles
-    int x_tile_start = blockIdx.x * blockDim.x;
-    int x_tile_stop = (blockIdx.x + 1) * blockDim.x;
 
-    int y_tile_start = blockIdx.y * blockDim.y;
-    int y_tile_stop = (blockIdx.y + 1) * blockDim.y;
+    float P_sum = 0.0;
 
-    int x_start_point = x - MASK_SIZE / 2;
-    int y_start_point = y - MASK_SIZE / 2;
+    // loop through rows of mask
+    for (int j = -n; j < n + 1; j++) {
+        // loop through columns of mask
+        for (int k = n; k < n + 1; k++) {
 
-    int P_sum = 0;
+            // get vars, delete if too many registers being used.
+            // index into the tile
+            int x_index = threadIdx.x + k;
+            int y_index = threadIdx.y + j;
 
-    // loop through columns of mask
-    for (int j = 0; j < MASK_SIZE; j++) {
-        // loop through rows of mask
-        for (int k = 0; k < MASK_SIZE; k++) {
-            int x_index = x_start_point + k;
-            int y_index = y_start_point + j;
+            // check that we are in bounds of the shared memory
+            if (x_index > -1 &&
+                    x_index < blockDim.x &&
+                    y_index > -1 &&
+                    y_index < blockDim.y) {
 
-            // check that we are in bounds of the picture
-            if (x_index >= 0 && x_index < width && y_index >= 0 && y_index < height) {
-
-                // check for skirt cells
-                // if it is a skirt, load it from global memory. It should then be cached in L2 which
-                // will allow it to be accessed quickly as an internal cell in another kernel
-                int index = (threadIdx.y - n + j) * blockDim.x + threadIdx.x - n + j;
-                if (index < BLOCK_SIZE * BLOCK_SIZE && index > -1){
-
-                        // grab pic values from shared memory
-                        P_sum += Pout_ds[index]
-                                 * M[(n + k) * MASK_SIZE + (n + j)];
-
-                    }
-                else {
-                        // grab from global memory
-                    P_sum += Pin[(y + j - n) * width + (x + k - n)] * M[(n + j) * MASK_SIZE + (n + k)];
-                    }
-                }
+                // accumulate with weight from mask "M"
+                P_sum += Pout_ds[y_index * blockDim.x + x_index] * M[(n + j)*MASK_SIZE + n + k];
             }
+                // check that we're within bounds of the image, otherwise just make the pixel zero
+            else if(x + k > -1 &&
+                    x + k < width &&
+                    y + j > -1 &&
+                    y + j < height){
 
+                // grab from global memory (probably cached since other threads are likely pulling this data)
+                // accumulate wieth weight from mask "M"
+                P_sum += float(Pin[(y+j)*width + x + k]) * M[(n + j)*MASK_SIZE + n + k];
+            }
         }
+    }
 
+    // make sure that the pixel is within the range of the picture
     if (x < width && y < height) {
-        Pout[i] = P_sum / mask_sum;
+        Pout[i] = (unsigned char) P_sum;
     }
 }
 
 
-// more naive version of the blur ==================================
+// ------------------------------------more naive version of the blur --------------------------------------------------
 __global__ void gpu_blur(unsigned char* Pout, unsigned char* Pin, int width, int height){
     int col = threadIdx.x + blockIdx.x * blockDim.x;
     int row = threadIdx.y + blockIdx.y * blockDim.y;
@@ -131,37 +130,59 @@ __global__ void gpu_blur(unsigned char* Pout, unsigned char* Pin, int width, int
     }
 }
 
+// KERNEL TO PLAY WITH
 __global__ void gpu_test(unsigned char* Pout, unsigned char* Pin, int width, int height) {
     int col = threadIdx.x + blockIdx.x * blockDim.x;
     int row = threadIdx.y + blockIdx.y * blockDim.y;
     int i = row * width + col;
 
-    if (row < height && col < width)
+    if (row < height && col < width) {
         Pout[i] = Pin[i];
+    }
 
 }
+
+// --------------------------------------cpu functions------------------------------------------------------------------
+
+void cpu_blur(cv::Mat src, cv::Mat dst){
+    int num_rows = src.rows;
+    int num_cols = src.cols;
+
+    // size of kernel (i.e. 3 = -3 -> 3 so size of 7 px)
+    unsigned char ksize = 3;
+    for(int i=ksize; i<num_rows-ksize; i++) {
+        for (int j = ksize; j < num_cols-ksize; j++) {
+            unsigned int pixsum = 0;
+            unsigned int numpx = 0;
+            // You can now access the pixel value with cv::Vec3b
+            for (int k=-ksize; k < ksize+1; k++){
+                for (int l=-ksize; l < ksize+1; l++) {
+                    numpx++;
+                    pixsum += (unsigned int) src.at<uchar>(i + k, j + l);
+                }
+            }
+            dst.at<uchar>(i,j) = (unsigned char) (pixsum / numpx);
+        }
+    }
+}
+
 
 // -----------MAIN-------------------MAIN-----------------MAIN----------------MAIN-------------MAIN---------------------
 
 int main(){
 
+    float bottom = 7.0;
     // ------------------------------- create a mask for convolving! ---------------------------------------------------
-    char convolve_mask5x5[25] = {
-            1, 1, 1, 1, 1,
-            1, 2, 2, 2, 1,
-            1, 2, 3, 2, 1,
-            1, 2, 2, 2, 1,
-            1, 1, 1, 1, 1
+    float convolve_mask5x5[25] = {
+            1.f/bottom, 1.f/bottom, 1.f/bottom, 1.f/bottom, 1.f/bottom,
+            1.f/bottom, 2.f/bottom, 2.f/bottom, 2.f/bottom, 1.f/bottom,
+            1.f/bottom, 2.f/bottom, 3.f/bottom, 2.f/bottom, 1.f/bottom,
+            1.f/bottom, 2.f/bottom, 2.f/bottom, 2.f/bottom, 1.f/bottom,
+            1.f/bottom, 1.f/bottom, 1.f/bottom, 1.f/bottom, 1.f/bottom
     };
 
-    // get the total of the mask to normalize pixels to correct values
-    int mask_sum = 0;
-    for (int i = 0; i < MASK_SIZE * MASK_SIZE; i++){
-        mask_sum += convolve_mask5x5[i];
-    }
-
     // copy the mask from the host to the device constant memory
-    cudaMemcpyToSymbol(M, convolve_mask5x5, MASK_SIZE * MASK_SIZE * sizeof(char));
+    cudaMemcpyToSymbol(M, convolve_mask5x5, MASK_SIZE * MASK_SIZE * sizeof(float));
 
     // ----------------getting the camera stream-----------------------------------
     const char* gst;
@@ -176,15 +197,10 @@ int main(){
 
     // error handling
     if(!cap.isOpened()) {
-        std::cout << "Failed to open camera." << std::endl;
+        printf("Failed To Open Camera");
         return -1;
     }
 
-    // create opnecv Mat container for image
-    cv::Mat frame_in;
-
-    // grab the first frame, this will also automatically size the container
-    cap >> frame_in;
 
     // get info about the picture
     unsigned int width = cap.get(CV_CAP_PROP_FRAME_WIDTH);
@@ -194,10 +210,15 @@ int main(){
     // print info about the picture
     printf("Frame Size: %d x %d\n %d pixels\n", width, height, pixels);
 
+    // create opnecv Mat container for image
+    cv::Mat frame_in;
+
+    // grab the first frame, this will also automatically size the container
+    cap >> frame_in;
+
     // create windows for different filters
     cv::namedWindow("Source");  // this window will hold the source image
     cv::namedWindow("Result");  // this window will hold the resultant image
-    
 
 
     // ------------------- ALLOCATE GPU MEMORY ------------------------------------
@@ -240,6 +261,12 @@ int main(){
     printf("total threads: %d\n",(numBlocks.x * numBlocks.y)*numThreads.x*numThreads.y);
 
 
+    printf("\n\n\n\n===========================================================\n"
+                   " TOGGLE WITH \"1\", \"2\", and \"3\" on your keyboard!\n"
+                   "\"q\" to quit\n"
+                   "\"c\" for CPU\n"
+                   "===========================================================\n\n\n\n");
+
     // init keystroke variables
     char keystroke = '1';  // default keystroke (GPU)
 
@@ -281,7 +308,15 @@ int main(){
             case 'c' : {
                 // ------------------CPU CASE---------------------------------------------------------------------------
                 // apply the operations
-                printf("hi\n");
+                cv::Mat frame_out(cv::Size(width, height), CV_8UC1);
+                cpu_blur(frame_in, frame_out);
+                // place some text on the image
+                cv::putText(frame_out, "CPU Blur", cv::Point(30, 30),
+                            cv::FONT_HERSHEY_COMPLEX_SMALL, 1, cv::Scalar(200, 200, 250), 1, CV_AA);
+
+                // show the images
+                cv::imshow("Source", frame_in);
+                cv::imshow("Result", frame_out);
                 break;
             }
 
@@ -291,7 +326,7 @@ int main(){
                 gpuErrchk( cudaMemcpy(d_Pin, frame_in.data, pixels * sizeof(unsigned char), cudaMemcpyHostToDevice) );
 
                 // execute gpu kernel
-                gpu_convolve2d <<< numBlocks, numThreads >>> (d_Pout, d_Pin, width, height, mask_sum);
+                gpu_convolve2d <<< numBlocks, numThreads >>> (d_Pout, d_Pin, width, height);
                 gpuErrchk( cudaPeekAtLastError() );
 
                 // make sure all the threads finished
@@ -370,7 +405,16 @@ int main(){
                 cv::imshow("Result", frame_out);
                 break;
             }
-        }
 
+            default: {
+                cv::Mat frame_out(cv::Size(width, height), CV_8UC1, h_Pout);
+                cv::putText(frame_out, "INCORRECT KEYSTROKE", cv::Point(height/2, width/2),
+                            cv::FONT_HERSHEY_COMPLEX_SMALL, 3, cv::Scalar(200, 200, 250), 1, CV_AA);
+                // show the images
+                cv::imshow("Source", frame_in);
+                cv::imshow("Result", frame_out);
+                break;
+            }
+        }
     }
 }

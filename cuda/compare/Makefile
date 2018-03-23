@@ -6,10 +6,10 @@ LDFLAGS= -L$(CUDA_INSTALL_PATH)/lib64 -lcudart -lcuda `pkg-config --libs opencv`
 
 all:
 	$(CXX) $(CFLAGS) -c main.cu -o main.o
-	$(CXX) main.o -o filters $(LDFLAGS)
+	$(CXX) main.o -o compare $(LDFLAGS)
 
 clean:
-	rm -f *.o filters
+	rm -f *.o compare
 
 
 

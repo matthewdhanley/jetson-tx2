@@ -1,5 +1,5 @@
 //
-// Created by matt on 3/13/18.
+// Created by matt on 3/18/18.
 //
 
 #include <iostream>
@@ -72,16 +72,21 @@ __global__ void gpu_convolve2d(unsigned char* Pout, unsigned char* Pin, int widt
                 else{
                     // grab from global memory
                     P_sum += Pin[(y + k) * width + (x + j)] * M[(n + k) * MASK_SIZE + (n + j)];
+//                    P_sum = 157;
                 }
             }
 
         }
-//        Pout[i] = P_sum / mask_sum;
     }
 
     if (x < width && y < height) {
 //        Pout[i] = Pout_ds[threadIdx.y * blockDim.y + threadIdx.x];
         Pout[i] = P_sum / mask_sum;
+//        Pout[i] = (unsigned char) threadIdx.x * threadIdx.y;
+    }
+
+    if (x % 32 == 0 || y % 32 == 0){
+        Pout[i] = 255;
     }
 }
 
