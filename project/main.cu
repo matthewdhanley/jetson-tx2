@@ -78,7 +78,7 @@ __global__ void gpu_colorMask(unsigned char *Pout, unsigned char* Pin_hsv, unsig
     int col = threadIdx.x + blockIdx.x * blockDim.x;                /* index into row of image */
     int row = threadIdx.y + blockIdx.y * blockDim.y;                /* index into column of image */
     unsigned int t = threadIdx.y * blockDim.x + threadIdx.x;        /* index into the block */
-    unsigned int b = blockIdx.y * gridDim.x + blockIdx.x;          /* index blocks into grid */
+    unsigned int b = blockIdx.y * gridDim.x + blockIdx.x;           /* index blocks into grid */
 
 
     if (col < width && row < height)                                /* Make sure within image, this will cause some control*/
@@ -89,7 +89,7 @@ __global__ void gpu_colorMask(unsigned char *Pout, unsigned char* Pin_hsv, unsig
         unsigned char s = Pin_hsv[i + 1];
         unsigned char v = Pin_hsv[i + 2];
 
-        if (h <= colorMask.hue_max && h >= colorMask.hue_min &&       /* check if pixel should be masked. */
+        if (h <= colorMask.hue_max && h >= colorMask.hue_min &&     /* check if pixel should be masked. */
             s <= colorMask.sat_max && s >= colorMask.sat_min &&
             v <= colorMask.val_max && v >= colorMask.val_min) {
             Pout[i] = Pin_rgb[i];                                   /* masking rgb image */
@@ -200,9 +200,6 @@ int main(){
         printf("Failed To Open Camera");
         return -1;
     }
-
-
-
 
     // get info about the picture
     unsigned int width  = cap.get(CV_CAP_PROP_FRAME_WIDTH);
