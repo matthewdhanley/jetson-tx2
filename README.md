@@ -36,7 +36,7 @@ That's it!
      * [0-adding](./cuda/0-adding)
         * Examples of Adding
         * [add_int.cu](./cuda/0-adding/add_int.cu)
-        * The most basic example of adding on the GPU. Simply adds
+           * The most basic example of adding on the GPU. Simply adds
         together two integers
         * [add_vec.cu](./cuda/0-adding/add_vec.cu)
            * Hello World Example - Simple example of adding two vectors
@@ -68,6 +68,50 @@ That's it!
            * Example of using OpenCV's gpu functions. Doesn't currently
            compile on my machine
      * [3-cmake_examle](./cuda/3-cmake_example)
+        * Example of using cmake to compile code
+        * [adding.cu](./cuda/3-cmake_example/adding.cu)
+           * Simple CUDA adding program
+        * [CMakeLists.txt](./cuda/3-cmake_example/CMakeLists.txt)
+           * Example ```CMakeLists.txt file``` for compiling CUDA code
      * [4-camera](./cuda/4-camera)
+        * [0-camera](./cuda/4-camera/0-camera)
+           * Example of using a camera with Jetson TX2
+        * [1-fast-image-processing](./cuda/4-camera/1-fast-image-processing)
+           * Kernels for greyscale, blurring, and thresholding. Allows for
+           switching between CPU and GPU
+        * [2-convolution](./cuda/4-camera/2-convolution)
+           * Example of convolution of a mask on an image. Can switch between
+           CPU and GPU
+        * [3-compare](./cuda/4-camera/3-compare)
+           * Compares different blur methods on GPU and CPU
      * [5-cpp-cuda-integration](./cuda/5-cpp-cuda-integration)
+        * [0-make-example](./cuda/5-cpp-cuda-integration/0-make-example)
+           * Very simple example of using CUDA and ```make```
+        * [1-make-opencv-example](./cuda/5-cpp-cuda-integration/0-make-opencv-example)
+           * Example of including OpenCV with ```make```
+        * [2-particle-nvcc-example](./cuda/5-cpp-cuda-integration/2-particle-nvcc-example)
+           * This is not my code, but shows an example of linking files together using ```make```
      * [6-reduction](./cuda/6-reduction)
+        * [reduction.cu](./cuda/6-reduction/reduction.cu)
+           * Example of using reduction to add a vector on the GPU
+        * [mat_mult_reduction.cu](./cuda/6-reduction/mat_mult_reduction.cu)
+           * Example of using reduction and matrix multiplication
+  * [latex](./latex)
+     * Examples of using LaTeX on linux
+     * [0-sample-report](./latex/0-sample-report)
+     * [1-cuda-cheatsheet](./latex/1-cuda-cheatsheet)
+  * [project](./project)
+     * Start of the project
+     * [main.cu](./project/main.cu)
+        * Program that tracks colors with ability to manually adjust mask
+        with OpenCV slider bars
+  * [python](./python)
+     * [opencv](./python/opencv)
+        * Example of using OpenCV in Python on Jetson TX2
+     * [usb-cam](./python/usb-cam)
+        * Test for using USB cam with Python and OpenCV
+  * [git.sh](./git.sh)
+     * Shell script to simplify pulling process and avoid merging.
+  * [README.md](./README.md)
+     * Markdown code to this "wiki"
+
