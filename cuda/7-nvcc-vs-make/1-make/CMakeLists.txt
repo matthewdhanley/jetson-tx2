@@ -12,19 +12,19 @@ find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 # creating an executable from our c++ code and header
-add_executable(1-make main.cpp main.h)
+add_executable(tracker main.cpp main.h)
 
 # creating CUDA "library" from our CUDA code.
 CUDA_ADD_LIBRARY(
-        1-make_gpu
+        tracker_gpu
         gpu_kernels.cu
         gpu_kernels.h
         )
 
 # linking libraries to our executable
-target_link_libraries(1-make 1-make_gpu)
-target_link_libraries(1-make ${OpenCV_LIBS})
-target_link_libraries(1-make ${CUDA_LIBRARIES})
+target_link_libraries(tracker tracker_gpu)
+target_link_libraries(tracker ${OpenCV_LIBS})
+target_link_libraries(tracker ${CUDA_LIBRARIES})
 
 # prints out this message because this cost me hours of trouble shooting
 message("!!!!!!!!!!!!!!!DISABLE ROS OPENCV!!!!!!!!!!!!")
