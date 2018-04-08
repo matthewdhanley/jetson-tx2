@@ -12,13 +12,13 @@ find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 # creating an executable from our c++ code and header
-add_executable(tracker main.cpp main.h)
+add_executable(tracker src/main.cpp include/main.h)
 
 # creating CUDA "library" from our CUDA code.
 CUDA_ADD_LIBRARY(
         tracker_gpu
-        gpu_kernels.cu
-        gpu_kernels.h
+        src/gpu_kernels.cu
+        include/gpu_kernels.h
         )
 
 # linking libraries to our executable

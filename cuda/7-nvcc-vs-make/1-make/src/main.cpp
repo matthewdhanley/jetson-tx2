@@ -8,8 +8,8 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
-#include "gpu_kernels.h"
-#include "main.h"
+#include "../include/gpu_kernels.h"
+#include "../include/main.h"
 
 
 
