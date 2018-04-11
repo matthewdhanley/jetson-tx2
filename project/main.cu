@@ -77,14 +77,14 @@ __global__ void gpu_colorMask(unsigned char *Pout, unsigned char* Pin_hsv, unsig
 
     int col = threadIdx.x + blockIdx.x * blockDim.x;                /* index into row of image */
     int row = threadIdx.y + blockIdx.y * blockDim.y;                /* index into column of image */
-    unsigned int t = threadIdx.y * blockDim.x + threadIdx.x;        /* index into the block */
+    int t = threadIdx.y * blockDim.x + threadIdx.x;        /* index into the block */
     unsigned int b = blockIdx.y * gridDim.x + blockIdx.x;           /* index blocks into grid */
 
-
+    int i = (row * width + col) * CHANNELS;            /* unique index into image */
     if (col < width && row < height)                                /* Make sure within image, this will cause some control*/
                                                                     /* divergence at the edges of the image*/
     {
-        unsigned int i = (row * width + col) * CHANNELS;            /* unique index into image */
+
         unsigned char h = Pin_hsv[i];                               /* Grab values of hue, saturation, and value */
         unsigned char s = Pin_hsv[i + 1];
         unsigned char v = Pin_hsv[i + 2];
@@ -106,6 +106,38 @@ __global__ void gpu_colorMask(unsigned char *Pout, unsigned char* Pin_hsv, unsig
             momentsX[t] = 0;
             momentsY[t] = 0;
             countNonZero[t] = 0;                                    /* saving that zero for average sum later */
+        }
+    }
+    __syncthreads();
+
+    // erode
+    if (countNonZero[t]){
+        if (col + 1 < width && t + 1 > blockDim.x * blockDim.y){
+            Pout[i+3] = Pin_rgb[i+3];                                    /* pixel to the right */
+            Pout[i+4] = Pin_rgb[i+4];
+            Pout[i+5] = Pin_rgb[i+5];
+            countNonZero[t+1] = 1;
+        }
+       
+        if (col - 1 >= 0 && t - 1 >= 0){
+            Pout[i-1] = Pin_rgb[i-1];                                    /* pixel to the left */
+            Pout[i-2] = Pin_rgb[i-2];
+            Pout[i-3] = Pin_rgb[i-3];
+            countNonZero[t-1] = 1;
+        }
+        
+        if (row - 1 >= 0 && t - blockDim.x >= 0){
+            Pout[i-width] = Pin_rgb[i-width];                                    /* pixel up */
+            Pout[i-width+1] = Pin_rgb[i-width+1];
+            Pout[i-width+2] = Pin_rgb[i-width+2];
+            countNonZero[t-blockDim.x] = 1;
+        }
+        
+        if (row + 1 < height && t + blockDim.x < blockDim.x * blockDim.y ){
+            Pout[i+width] = Pin_rgb[i+width];                                    /* pixel down */
+            Pout[i+width+1] = Pin_rgb[i+width+1];
+            Pout[i+width+2] = Pin_rgb[i+width+2];
+            countNonZero[t+blockDim.x] = 1;
         }
     }
     __syncthreads();
