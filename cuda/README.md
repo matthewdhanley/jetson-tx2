@@ -107,6 +107,7 @@ __global__ void MyKernel(int *array, int arrayCount)
 } 
 ```
 <hr>
+
 ### The Code, Explained
 
 This is the beginning of the kernel launch function. It takes an array and number of elements in the array. This specific section initializes three variables, ```blocksize```, ```minGridSize```, and ```grid size```. The function of these variables exists in the comments.
@@ -159,6 +160,7 @@ This section gets properties from the device. ```int device;``` initializes the 
 ```
 
 <br>
+
 This calculates the occupancy achieved. The number of active threads divided by the warp size is divided by the theoretical max number of threads per multiprocessor (i.e. active/max). Finally it's printed to the user.
 ``` C
   float occupancy = (maxActiveBlocks * blockSize / props.warpSize) / 
