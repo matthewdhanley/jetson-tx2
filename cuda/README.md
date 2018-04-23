@@ -31,7 +31,7 @@ my_gpu_fun<<<dimGrid, dimBlock>>>(var1, var2, var3);
 ## Optomization
 Again, the whole reason for using a GPU is to speed up code. Optomizing your code is a great way to get even more gains. Writing code without thoughts of optomizing can make GPUs even slower than CPUs. Here are some basic optomization terms one should be familiar with.
 
-## Occupancy
+### Occupancy
 Ratio of active warps per SM to total number of possible active warps on the SM.
 
 ### Cycle
