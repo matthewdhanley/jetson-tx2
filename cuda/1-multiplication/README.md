@@ -1,7 +1,7 @@
 # Matix Multiplication Example
 
 ## Naive implementation
-When running a basic matrix multiplication example, the average time to multiply two random 1000x1000 element arrays on the gpu was _78.2 ms_ whereas on the CPU the time was on the order of _13000 ms_!
+When running a basic matrix multiplication example, the average time to multiply two random 500x500 element arrays on the gpu was _78.2 ms_ whereas on the CPU the time was on the order of _13000 ms_!
 
 
 This is the kernel that achieved these stats with a blocksize of 16
@@ -22,8 +22,8 @@ __global__ void gpu_matrix_mult(int *a, int *b, int *c, int m, int n, int k)
     }
 }
 ```
-
-Next, we will implement the tiling algorithm. Here is the new kernel
+## Tiling
+Next, we will implement the tiling algorithm. Here is the new kernel. This brought our average time for 500x500 matrix multiplications down to _32.9 ms_. Much better! But can we do better yet?
 ``` C
 __global__ void gpu_matrix_mult_two(int *d_M, int *d_N, int *d_P, int m, int n, int k)
 {
@@ -80,4 +80,12 @@ __global__ void gpu_matrix_mult_two(int *d_M, int *d_N, int *d_P, int m, int n, 
     }
 }
 ```
+## Intelligent Resource Management
+Using intelligent resource management, I was able to bring the time of multiplying 500x500 element matricies down to _31.9 ms_. Not an incredible speedup.
+Things we need to take advantage of
+1. Registers
+2. Shared Memory
+3. Minimizing flops
+4. Minimizing global memory accesses
 
+https://devblogs.nvidia.com/using-shared-memory-cuda-cc/
