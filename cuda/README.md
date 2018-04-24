@@ -172,6 +172,14 @@ This calculates the occupancy achieved. The number of active threads divided by 
 }
 ```
 
+## Errors...
+When going to execute previously executed code, it is found that it always segfaults. This is likely due to rebuilding kernels per jetson-hacks tutorial in order to activate support for AMC devices.
+
+When running ```sudo dmesg --follow``` it can be seen that the error is arising in ```/usr/lib/aarch64-linux-gnu/tegra/libcuda.so.1.1```, the shared CUDA library.
+
+I reran the [tutorial](http://www.jetsonhacks.com/2017/07/31/build-kernel-ttyacm-module-nvidia-jetson-tx2/) from [JetsonHacks](http://www.jetsonhacks.com/) and it seemd to fix the problem.
+
+
 
 ### References
 [[1]](https://www.shodor.org/media/content/petascale/materials/UPModules/matrixMultiplication/moduleDocument.pdf) Robert Hochberg. _Matrix Multiplication with CUDA - A basic introduction to the CUDA programming model._ 2012.
