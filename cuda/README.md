@@ -1,5 +1,5 @@
 # Getting Started with CUDA
-Comput Unified Device Architecture (CUDA) by NVIDIA allows a user to write programs in C and compile using ncc to make use of a CUDA-enabled GPU device. This enables a GPU device to run single instruction, multiple thread (SIMT) code. This gives the ability for creating highly parallized programs.
+Comput Unified Device Architecture (CUDA) by NVIDIA allows a user to write programs in C and compile using ncc to make use of a CUDA-enabled GPU device. This enables a GPU device to run single instruction, multiple thread (SIMT) code. This gives the ability for creating highly parallized programs. A lot of this information was gleamed from the book [_Programming Massively Parallel Processors: A Hands-On Approach_](https://www.amazon.com/Programming-Massively-Parallel-Processors-Hands/dp/0128119861/ref=pd_lpo_sbs_14_t_0?_encoding=UTF8&psc=1&refRID=K8WDW9FN9Z8N77X2VZ3S). I highly recommend this text as it is in depth and easy to read.
 
 ## The Thread
 The thread is like a little computer. Threads in a CUDA program have their own program counters and registers and are run simutaneousluy with multiple different threads within the same _block_. All threads are able to share a "global memory," but also have their own "privite memory."
