@@ -96,6 +96,11 @@ That's it!
            * Example of using reduction to add a vector on the GPU
         * [mat_mult_reduction.cu](./cuda/6-reduction/mat_mult_reduction.cu)
            * Example of using reduction and matrix multiplication
+     * [7-nvcc-vs-make](./cuda/7-nvcc-vs-make)
+        * [0-nvcc](./cuda/7-nvcc-vs-make/0-nvcc)
+           * Example of using only nvcc to link and compile a project
+        * [1-make](./cuda/7-nvcc-vs-make/1-make)
+           * Example of using ```make``` to link and compile a project
   * [latex](./latex)
      * Examples of using LaTeX on linux
      * [0-sample-report](./latex/0-sample-report)

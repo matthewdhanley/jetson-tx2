@@ -3,16 +3,16 @@ Comput Unified Device Architecture (CUDA) by NVIDIA allows a user to write progr
 
 ## The Thread
 The thread is like a little computer. Threads in a CUDA program have their own program counters and registers and are run simutaneousluy with multiple different threads within the same _block_. All threads are able to share a "global memory," but also have their own "privite memory."
-![Thread](https://github.com/matthewdhanley/jetson-tx2/blob/master/cuda/intro/img/thread.png)
+![Thread](https://github.com/matthewdhanley/jetson-tx2/blob/master/cuda/img/thread.png)
 ## The Block
 A block is made up of many threads. Within a block, threads share a very fast "shared memory" as well as instruction stream. These instructions run in parallel. A block on the Jetson TX2 can have up to 1024 threads. Blocks can have many dimensions (1, 2, or 3) as specified by the user. All blocks within a _grid_ must be the same size.
-![Block](https://github.com/matthewdhanley/jetson-tx2/blob/master/cuda/intro/img/block.png)
+![Block](https://github.com/matthewdhanley/jetson-tx2/blob/master/cuda/img/block.png)
 ## The Grid
 A grid is a two-dimensional collection of blocks. The dimensions are specified by the user.
-![Grid](https://github.com/matthewdhanley/jetson-tx2/blob/master/cuda/intro/img/grid.PNG)
+![Grid](https://github.com/matthewdhanley/jetson-tx2/blob/master/cuda/img/grid.PNG)
 ## Finding the Thread
 At the start of a program, threads identify themselves. This helps map where a thread is within a block within a grid. The table below shows how to index into grids.
-![Full](https://github.com/matthewdhanley/jetson-tx2/blob/master/cuda/intro/img/full.PNG)
+![Full](https://github.com/matthewdhanley/jetson-tx2/blob/master/cuda/img/full.PNG)
 
 | Variable | Description |
 | --- | --- |
@@ -183,6 +183,9 @@ I reran the [tutorial](http://www.jetsonhacks.com/2017/07/31/build-kernel-ttyacm
 
 ### References
 [[1]](https://www.shodor.org/media/content/petascale/materials/UPModules/matrixMultiplication/moduleDocument.pdf) Robert Hochberg. _Matrix Multiplication with CUDA - A basic introduction to the CUDA programming model._ 2012.
+
 http://www.oocities.org/mc_introtocomputers/Simple_CPU_Instructions_with_registers.htm
+
 https://devblogs.nvidia.com/cuda-pro-tip-occupancy-api-simplifies-launch-configuration/
+
 https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__HIGHLEVEL.html#group__CUDART__HIGHLEVEL_1gee5334618ed4bb0871e4559a77643fc1

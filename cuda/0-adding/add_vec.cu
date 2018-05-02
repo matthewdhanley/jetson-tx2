@@ -40,7 +40,7 @@ void random_ints(int* a, int N)
 }
 
 // defining global variable "N" which defines size of arrays.
-#define N 512
+#define N 32
 
 //=============================================================================
 //============================= MAIN ==========================================
